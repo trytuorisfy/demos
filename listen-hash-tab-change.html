@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>监听hash值</title>
+	<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+	<style>
+		.cont-area{
+			display: none;
+		}
+		.cont-area:
+	</style>
+</head>
+<body>
+	<ul id='li-wrap'>
+		<li>li-1</li>
+		<li>li-2</li>
+		<li>li-3</li>
+		<li>li-4</li>
+	</ul>
+	<div id='cont-wrap'>
+		<div class='cont-area'>
+			第一个内容区
+		</div>
+		<div class='cont-area'>
+			第二个内容区
+		</div>
+		<div class='cont-area'>
+			第三个内容区
+		</div>
+		<div class='cont-area'>
+			第四个内容区
+		</div>
+	</div>
+
+	<script>
+		var currentTab = 'tab1';
+
+		getUrlKeys('init'); //页面初始时取值
+		listenHashChange();
+
+		$('#li-wrap').on('click','li',function(){
+			var curIndex = $(this).index() + 1
+			var curTab = 'tab' + curIndex;
+			changeHash(curTab);
+		})
+
+		function getUrlParam(){
+                var nowUrl = decodeURI(window.location.hash)
+                var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+                var r = nowUrl.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return '';			
+		}
+        function listenHashChange(){//监听hash值变化
+            var me = this;
+            window.onhashchange = function(){
+                console.log('change了')
+				getUrlKeys();
+            }
+        }
+        function getUrlKeys(type){//获取需要的值
+            //获取tab值
+            var tab = this.getHashUrlParam('tab');
+            if(!tab){
+                tab = 'tab1';
+            }
+
+            if(type == 'init'){
+                currentTab = tab;
+                changeCurrentTab(tab); //init为刷新时,url自带的hash
+            }else{
+                changeCurrentTab(tab);
+            }           
+        }
+        function getHashUrlParam(key) {//获取url中key对应的val
+            var nowUrl = decodeURI(window.location.hash)
+            var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+            var r = nowUrl.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return '';
+        }
+        function changeHash(tab){
+        	//此函数主动修改hash值
+        	currentTab = tab;
+        	window.location.hash = 'tab=' +  currentTab;
+        }
+        function changeCurrentTab(tab){
+        	currentTab = tab;
+        	console.log('change=' + tab)
+        	var curIndex = currentTab.substring(3) - 1;
+        	 $('#cont-wrap').find('.cont-area').eq(curIndex).show().siblings().hide();
+        }
+
+	</script>
+</body>
+</html>

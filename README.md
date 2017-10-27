@@ -13,3 +13,10 @@
 
 4.底部固定一片区域，显示非主要数据，类似log数据
 
+### 监听hash值
+总思路：监听hash值，hash值改变是请求数据，获取需要的值。
+
+
+1.<a href="https://trytuorisfy.github.io/demos/listen-hash-tab-change.html" target="_blank">切换tab</a>
+
+
